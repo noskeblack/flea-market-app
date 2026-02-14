@@ -31,11 +31,10 @@
 ## アーキテクチャ
 
 ```
-Controller → Service → Model
+Controller → Model
 ```
 
-- **Controller**: リクエスト受付・レスポンス返却のみ
-- **Service**: ビジネスロジック (データ加工・条件判定・外部API連携)
+- **Controller**: リクエスト受付・ビジネスロジック・レスポンス返却
 - **Model**: Eloquentリレーション・データアクセス
 - **FormRequest**: バリデーションロジック (コントローラーから分離)
 
@@ -48,8 +47,7 @@ src/
 │   │   ├── Controllers/     # コントローラー
 │   │   └── Requests/        # FormRequestバリデーション
 │   ├── Models/              # Eloquentモデル
-│   ├── Providers/           # サービスプロバイダ
-│   └── Services/            # ビジネスロジック層
+│   └── Providers/           # サービスプロバイダ
 ├── database/
 │   ├── factories/           # テストデータ用ファクトリ
 │   ├── migrations/          # マイグレーション
@@ -73,8 +71,8 @@ src/
 | `conditions` | 商品状態マスタ |
 | `comments` | コメント |
 | `favorites` | いいね (お気に入り) |
-| `purchases` | 購入履歴 |
-| `addresses` | 配送先住所 |
+| `profiles` | ユーザープロフィール (住所情報) |
+| `purchases` | 購入履歴 (配送先スナップショット含む) |
 
 ## 環境構築
 
@@ -126,4 +124,3 @@ docker compose exec php php artisan storage:link
 | モデル / コントローラー | アッパーキャメルケース | `ItemController`, `UserProfile` |
 | マイグレーション / カラム名 | スネークケース | `user_id`, `item_name` |
 | バリデーション | FormRequestクラスで分離 | `StoreItemRequest` |
-| サービス | アッパーキャメルケース + Service | `ItemService`, `PaymentService` |
