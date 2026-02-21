@@ -18,26 +18,17 @@ class ItemController extends Controller
     {
         $tab = $request->input('tab', 'recommend');
         $keyword = $request->input('keyword');
+        $userId = Auth::id();
 
         if ($tab === 'mylist' && Auth::check()) {
-            // マイリスト: ログインユーザーがいいねした商品
-            $query = Item::whereHas('favorites', function ($q) {
-                $q->where('user_id', Auth::id());
-            });
+            $query = Item::myList($userId);
         } else {
-            // おすすめ: 全商品（自分の出品を除外）
-            $query = Item::query();
-            if (Auth::check()) {
-                $query->where('user_id', '!=', Auth::id());
-            }
+            $query = Item::recommended($userId);
         }
 
-        // キーワード検索（商品名の部分一致）
-        if ($keyword) {
-            $query->where('name', 'like', '%' . $keyword . '%');
-        }
-
-        $items = $query->orderBy('created_at', 'desc')->get();
+        $items = $query->keyword($keyword)
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return view('items.index', compact('items', 'tab', 'keyword'));
     }

@@ -73,6 +73,43 @@ class Item extends Model
     }
 
     /**
+     * スコープ: おすすめ一覧
+     * ログインユーザーの出品を除外する（$viewerUserId が null の場合は全件）
+     */
+    public function scopeRecommended($query, $viewerUserId = null)
+    {
+        if ($viewerUserId) {
+            $query->where('user_id', '!=', $viewerUserId);
+        }
+
+        return $query;
+    }
+
+    /**
+     * スコープ: マイリスト
+     * ログインユーザーがお気に入りした商品に絞り込む
+     */
+    public function scopeMyList($query, $userId)
+    {
+        return $query->whereHas('favorites', function ($q) use ($userId) {
+            $q->where('user_id', $userId);
+        });
+    }
+
+    /**
+     * スコープ: キーワード検索
+     * キーワードがある場合のみ、商品名の部分一致で絞り込む
+     */
+    public function scopeKeyword($query, $keyword = null)
+    {
+        if ($keyword) {
+            $query->where('name', 'like', '%' . $keyword . '%');
+        }
+
+        return $query;
+    }
+
+    /**
      * 画像URLアクセサ
      * 外部URL（http始まり）はそのまま返し、ローカルパスは storage URL に変換
      */

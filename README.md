@@ -27,6 +27,7 @@
 | 決済 | Stripe API |
 | メール (開発) | MailHog |
 | 画像保存 | Laravel Storage (public) |
+| テスト | PHPUnit |
 
 ## アーキテクチャ
 
@@ -237,6 +238,26 @@ docker compose exec php php artisan storage:link
 | アプリケーション | http://localhost |
 | phpMyAdmin | http://localhost:8080 |
 | MailHog | http://localhost:8025 |
+
+## テストの実行方法
+
+主要機能の正常動作を保証する自動テスト（Feature Test）を実装しています。
+
+### 実行コマンド
+
+```bash
+docker compose exec php php artisan test
+```
+
+### テスト概要
+
+| テストファイル | テスト内容 |
+|---|---|
+| `ItemListTest.php` | 商品一覧の絞り込み（おすすめ・マイリスト）、キーワード検索、検索状態の維持 |
+| `PurchaseTest.php` | 購入時の住所スナップショット保存、決済後の商品ステータス（`is_sold`）更新 |
+
+- テスト用データベース（`laravel_db_test`）を使用するため、開発用データに影響はありません。
+- テスト実行ごとにデータベースがリセットされます（`RefreshDatabase`）。
 
 ## 命名規則
 
