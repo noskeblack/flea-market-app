@@ -74,6 +74,127 @@ src/
 | `profiles` | ユーザープロフィール (住所情報) |
 | `purchases` | 購入履歴 (配送先スナップショット含む) |
 
+## ER図
+
+```mermaid
+erDiagram
+    users {
+        bigint id PK
+        string name
+        string email UK
+        timestamp email_verified_at
+        string password
+        text two_factor_secret
+        text two_factor_recovery_codes
+        string profile_image
+        string remember_token
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    profiles {
+        bigint id PK
+        bigint user_id FK,UK
+        string zipcode
+        string address
+        string building
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    items {
+        bigint id PK
+        bigint user_id FK
+        bigint condition_id FK
+        string name
+        string brand
+        unsigned_integer price
+        string description
+        string image
+        boolean is_sold
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    conditions {
+        bigint id PK
+        string name
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    categories {
+        bigint id PK
+        string name
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    category_item {
+        bigint id PK
+        bigint category_id FK
+        bigint item_id FK
+    }
+
+    comments {
+        bigint id PK
+        bigint user_id FK
+        bigint item_id FK
+        text content
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    favorites {
+        bigint id PK
+        bigint user_id FK
+        bigint item_id FK
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    purchases {
+        bigint id PK
+        bigint user_id FK
+        bigint item_id FK
+        unsigned_tinyint payment_method
+        string zipcode
+        string address
+        string building
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    users ||--|| profiles : "has one"
+    users ||--o{ items : "sells"
+    users ||--o{ comments : "posts"
+    users ||--o{ favorites : "likes"
+    users ||--o{ purchases : "buys"
+
+    items ||--o{ comments : "has"
+    items ||--o{ favorites : "has"
+    items ||--o| purchases : "purchased in"
+
+    items }o--|| conditions : "has"
+
+    items ||--o{ category_item : "has"
+    categories ||--o{ category_item : "has"
+```
+
+### テーブル役割の解説
+
+| テーブル | 役割 |
+|---|---|
+| **users** | アプリケーションの全ユーザーを管理。認証情報（メール・パスワード・二段階認証）とプロフィール画像を保持します。 |
+| **profiles** | ユーザーの住所情報（郵便番号・住所・建物名）を管理。`user_id` にユニーク制約があり、ユーザーと **1:1** の関係です。購入時のデフォルト配送先として使用されます。 |
+| **items** | 出品された商品の情報を管理。出品者（`user_id`）、商品状態（`condition_id`）、名前、ブランド、価格、説明、画像パス、売却済みフラグを保持します。 |
+| **conditions** | 商品の状態（良好・目立った傷や汚れなし・やや傷や汚れあり・状態が悪い 等）を定義するマスタテーブルです。 |
+| **categories** | 商品カテゴリ（ファッション・家電・本 等）を定義するマスタテーブルです。 |
+| **category_item** | `items` と `categories` の **多対多（n:m）** 関係を実現する中間テーブル。1つの商品に複数のカテゴリを紐付けられます。 |
+| **comments** | ユーザーが商品に対して投稿するコメントを管理。`user_id` と `item_id` で誰がどの商品にコメントしたかを記録します。 |
+| **favorites** | いいね（お気に入り）機能を管理。`user_id` と `item_id` のペアにユニーク制約があり、同じユーザーが同じ商品に二重にいいねできない仕組みです。 |
+| **purchases** | 購入履歴を管理。**配送先住所のスナップショット**（`zipcode`, `address`, `building`）を購入時点の値として保持します。これにより、ユーザーがプロフィールの住所を後から変更しても、購入時に指定した配送先がそのまま残り、正確な配送情報を維持できます。`payment_method` で決済方法（コンビニ払い・カード払い等）も記録します。 |
+
 ## 環境構築
 
 ### 前提条件

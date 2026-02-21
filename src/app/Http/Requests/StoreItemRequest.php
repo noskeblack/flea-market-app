@@ -22,7 +22,7 @@ class StoreItemRequest extends FormRequest
             'categories.*' => ['exists:categories,id'],
             'condition_id' => ['required', 'exists:conditions,id'],
             'brand'        => ['nullable', 'string', 'max:255'],
-            'price'        => ['required', 'numeric', 'min:0'],
+            'price'        => ['required', 'integer', 'min:0'],
         ];
     }
 
@@ -40,7 +40,7 @@ class StoreItemRequest extends FormRequest
             'condition_id.required' => '商品の状態を選択してください。',
             'condition_id.exists'   => '正しい商品の状態を選択してください。',
             'price.required'        => '販売価格は必須です。',
-            'price.numeric'         => '販売価格は数値で入力してください。',
+            'price.integer'         => '販売価格は整数で入力してください。',
             'price.min'             => '販売価格は0円以上で入力してください。',
         ];
     }

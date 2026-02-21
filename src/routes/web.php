@@ -19,8 +19,8 @@ use App\Http\Controllers\AddressController;
 Route::get('/', [ItemController::class, 'index'])->name('items.index');
 Route::get('/item/{item_id}', [ItemController::class, 'show'])->name('items.show');
 
-// --- 認証必須ルート ---
-Route::middleware('auth')->group(function () {
+// --- 認証＋メール認証必須ルート ---
+Route::middleware(['auth', 'verified'])->group(function () {
 
     // 商品出品
     Route::get('/sell', [ItemController::class, 'create'])->name('items.create');

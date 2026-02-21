@@ -25,9 +25,9 @@ class ItemController extends Controller
                 $q->where('user_id', Auth::id());
             });
         } else {
-            // おすすめ: 全商品（キーワード検索がない場合は自分の出品を除外）
+            // おすすめ: 全商品（自分の出品を除外）
             $query = Item::query();
-            if (Auth::check() && !$keyword) {
+            if (Auth::check()) {
                 $query->where('user_id', '!=', Auth::id());
             }
         }

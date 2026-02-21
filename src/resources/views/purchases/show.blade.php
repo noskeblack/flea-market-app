@@ -65,8 +65,8 @@
                         class="w-full px-4 py-3 border border-gray-300 rounded-sm text-sm bg-white focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
                     >
                         <option value="" disabled {{ old('payment_method') ? '' : 'selected' }}>選択してください</option>
-                        <option value="1" {{ old('payment_method') == '1' ? 'selected' : '' }}>コンビニ払い</option>
-                        <option value="2" {{ old('payment_method') == '2' ? 'selected' : '' }}>カード払い</option>
+                        <option value="1" {{ old('payment_method') == '1' ? 'selected' : '' }}>コンビニ支払い</option>
+                        <option value="2" {{ old('payment_method') == '2' ? 'selected' : '' }}>カード支払い</option>
                     </select>
                     @error('payment_method')
                         <p class="mt-1 text-red-500 text-xs">{{ $message }}</p>
@@ -107,7 +107,7 @@
                         <tr class="border-b border-gray-200">
                             <td class="px-6 py-4 font-bold text-gray-700">支払い方法</td>
                             <td class="px-6 py-4 text-right text-gray-900" id="summary-payment">
-                                {{ old('payment_method') == '1' ? 'コンビニ払い' : (old('payment_method') == '2' ? 'カード払い' : '未選択') }}
+                                {{ old('payment_method') == '1' ? 'コンビニ支払い' : (old('payment_method') == '2' ? 'カード支払い' : '未選択') }}
                             </td>
                         </tr>
                     </table>
@@ -136,7 +136,7 @@
 <script>
     // 支払い方法の選択をサマリーに反映
     document.getElementById('payment-method').addEventListener('change', function() {
-        const labels = { '1': 'コンビニ払い', '2': 'カード払い' };
+        const labels = { '1': 'コンビニ支払い', '2': 'カード支払い' };
         document.getElementById('summary-payment').textContent = labels[this.value] || '未選択';
     });
 </script>
