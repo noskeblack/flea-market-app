@@ -231,7 +231,7 @@ docker compose exec php php artisan db:seed
 docker compose exec php php artisan storage:link
 ```
 
-### アクセスURL
+### 各サービスのアクセスURL
 
 | サービス | URL |
 |---|---|
@@ -298,13 +298,6 @@ MailHogはすべてのメールをキャプチャするローカルツールの�
 
 > **メール未認証の状態でログインした場合**、メール認証誘導画面（`/email/verify`）にリダイレクトされます。認証を完了するまで、マイページ・出品・購入などの機能は利用できません。
 
-### 各サービスのURL一覧
-
-| サービス | URL | 用途 |
-|---|---|---|
-| アプリケーション | http://localhost | メインのフリマアプリ |
-| MailHog | http://localhost:8025 | 認証メールの確認 |
-| phpMyAdmin | http://localhost:8080 | データベースの管理・確認 |
 
 ## テストの実行方法
 
