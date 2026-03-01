@@ -231,6 +231,41 @@ docker compose exec php php artisan db:seed
 docker compose exec php php artisan storage:link
 ```
 
+### Stripe（カード/コンビニ決済）設定
+
+本アプリの購入機能は Stripe Checkout を利用しています。`.env` に以下を設定してください。
+
+```dotenv
+STRIPE_KEY=pk_test_xxxxxxxxxxxxxxxxx
+STRIPE_SECRET=sk_test_xxxxxxxxxxxxxxxxx
+```
+
+- テスト用キーは Stripe ダッシュボードの **開発者 > API キー** から取得できます。
+- `STRIPE_SECRET` が未設定の場合、購入時に「決済サービスの設定が完了していません。」エラーになります。
+- 本リポジトリの購入フローは Checkout のリダイレクト方式のため、ローカル検証時は基本的に Webhook 設定は必須ではありません。
+
+### テスト用DBの準備
+
+`php artisan test` は開発DBとは別のテスト用DBを利用してください。  
+（開発データの保護と、毎回クリーンな状態での実行のため）
+
+```bash
+# MySQLコンテナ内でテスト用DBを作成（初回のみ）
+docker compose exec mysql mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS laravel_db_test;"
+```
+
+`src/.env.testing`（またはテスト実行時の環境変数）に接続先を設定します。
+
+```dotenv
+APP_ENV=testing
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=laravel_db_test
+DB_USERNAME=root
+DB_PASSWORD=root
+```
+
 ### 各サービスのアクセスURL
 
 | サービス | URL |
@@ -307,6 +342,12 @@ MailHogはすべてのメールをキャプチャするローカルツールの�
 
 ```bash
 docker compose exec php php artisan test
+```
+
+必要に応じて、特定ファイルのみ実行することもできます。
+
+```bash
+docker compose exec php php artisan test tests/Feature/CoreFeatureRequirementsTest.php
 ```
 
 ### テスト概要

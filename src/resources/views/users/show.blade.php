@@ -31,16 +31,22 @@
     </div>
 
     {{-- ===== タブ切り替え ===== --}}
-    <div class="flex border-b border-gray-300 mb-6">
-        <a href="{{ route('mypage.show', ['tab' => 'sell']) }}"
-           class="px-6 py-3 text-base font-semibold {{ $tab === 'sell' ? 'text-red-500 border-b-2 border-red-500' : 'text-gray-500 hover:text-red-500' }}">
-            出品した商品
-        </a>
-        <a href="{{ route('mypage.show', ['tab' => 'buy']) }}"
-           class="ml-4 px-6 py-3 text-base font-semibold {{ $tab === 'buy' ? 'text-red-500 border-b-2 border-red-500' : 'text-gray-500 hover:text-red-500' }}">
-            購入した商品
-        </a>
-    </div>
+    <nav class="border-b border-gray-300 mb-6" aria-label="マイページタブ">
+        <ul class="flex">
+            <li>
+                <a href="{{ route('mypage.show', ['tab' => 'sell']) }}"
+                   class="px-6 py-3 text-base font-semibold {{ $tab === 'sell' ? 'text-red-500 border-b-2 border-red-500' : 'text-gray-500 hover:text-red-500' }}">
+                    出品した商品
+                </a>
+            </li>
+            <li class="ml-4">
+                <a href="{{ route('mypage.show', ['tab' => 'buy']) }}"
+                   class="px-6 py-3 text-base font-semibold {{ $tab === 'buy' ? 'text-red-500 border-b-2 border-red-500' : 'text-gray-500 hover:text-red-500' }}">
+                    購入した商品
+                </a>
+            </li>
+        </ul>
+    </nav>
 
     {{-- ===== 商品一覧グリッド ===== --}}
     @if($items->isNotEmpty())

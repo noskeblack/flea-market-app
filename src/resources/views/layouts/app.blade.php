@@ -43,28 +43,40 @@
                 </div>
 
                 {{-- ナビゲーション --}}
-                <nav class="flex items-center space-x-6">
-                    @auth
-                        <form method="POST" action="{{ route('logout') }}" class="inline">
-                            @csrf
-                            <button type="submit" class="text-white text-sm hover:text-gray-300 transition">
-                                ログアウト
-                            </button>
-                        </form>
-                        <a href="{{ route('mypage.show') }}" class="text-white text-sm hover:text-gray-300 transition">
-                            マイページ
-                        </a>
-                    @else
-                        <a href="{{ route('login') }}" class="text-white text-sm hover:text-gray-300 transition">
-                            ログイン
-                        </a>
-                        <a href="{{ route('register') }}" class="text-white text-sm hover:text-gray-300 transition">
-                            会員登録
-                        </a>
-                    @endauth
-                    <a href="{{ route('items.create') }}" class="bg-white text-black text-sm font-bold px-6 py-2 rounded-sm hover:bg-gray-200 transition">
-                        出品
-                    </a>
+                <nav aria-label="グローバルメニュー">
+                    <ul class="flex items-center space-x-6">
+                        @auth
+                            <li>
+                                <form method="POST" action="{{ route('logout') }}" class="inline">
+                                    @csrf
+                                    <button type="submit" class="text-white text-sm hover:text-gray-300 transition">
+                                        ログアウト
+                                    </button>
+                                </form>
+                            </li>
+                            <li>
+                                <a href="{{ route('mypage.show') }}" class="text-white text-sm hover:text-gray-300 transition">
+                                    マイページ
+                                </a>
+                            </li>
+                        @else
+                            <li>
+                                <a href="{{ route('login') }}" class="text-white text-sm hover:text-gray-300 transition">
+                                    ログイン
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('register') }}" class="text-white text-sm hover:text-gray-300 transition">
+                                    会員登録
+                                </a>
+                            </li>
+                        @endauth
+                        <li>
+                            <a href="{{ route('items.create') }}" class="bg-white text-black text-sm font-bold px-6 py-2 rounded-sm hover:bg-gray-200 transition">
+                                出品
+                            </a>
+                        </li>
+                    </ul>
                 </nav>
 
             </div>

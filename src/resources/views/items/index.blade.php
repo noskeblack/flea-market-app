@@ -6,18 +6,24 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
     {{-- タブ切り替え --}}
-    <div class="flex border-b border-gray-300 mb-8">
-        <a href="{{ route('items.index', ['tab' => 'recommend', 'keyword' => $keyword]) }}"
-           class="px-8 py-3 text-sm font-bold transition
-                  {{ $tab !== 'mylist' ? 'text-red-500 border-b-2 border-red-500' : 'text-gray-500 hover:text-gray-700' }}">
-            おすすめ
-        </a>
-        <a href="{{ route('items.index', ['tab' => 'mylist', 'keyword' => $keyword]) }}"
-           class="px-8 py-3 text-sm font-bold transition
-                  {{ $tab === 'mylist' ? 'text-red-500 border-b-2 border-red-500' : 'text-gray-500 hover:text-gray-700' }}">
-            マイリスト
-        </a>
-    </div>
+    <nav class="border-b border-gray-300 mb-8" aria-label="商品一覧タブ">
+        <ul class="flex">
+            <li>
+                <a href="{{ route('items.index', ['tab' => 'recommend', 'keyword' => $keyword]) }}"
+                   class="px-8 py-3 text-sm font-bold transition
+                          {{ $tab !== 'mylist' ? 'text-red-500 border-b-2 border-red-500' : 'text-gray-500 hover:text-gray-700' }}">
+                    おすすめ
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('items.index', ['tab' => 'mylist', 'keyword' => $keyword]) }}"
+                   class="px-8 py-3 text-sm font-bold transition
+                          {{ $tab === 'mylist' ? 'text-red-500 border-b-2 border-red-500' : 'text-gray-500 hover:text-gray-700' }}">
+                    マイリスト
+                </a>
+            </li>
+        </ul>
+    </nav>
 
     {{-- マイリストで未ログイン時のメッセージ --}}
     @if($tab === 'mylist' && !auth()->check())
